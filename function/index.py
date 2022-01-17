@@ -1,8 +1,8 @@
 import json
 import uuid
 
-GET_RAW_PATH = "/getPerson"
-CREATE_RAW_PATH = "/createPerson"
+
+CREATE_RAW_PATH = "/challenge"
 
 def lambda_handler(event, context):
     print(event)

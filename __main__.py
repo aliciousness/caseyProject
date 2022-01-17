@@ -26,7 +26,7 @@ lambda_return = aws.lambda_.Function("lambdaFunctionReturn",
     code=pulumi.AssetArchive({
         ".": pulumi.FileArchive("./function"),
     }),
-    runtime="python 3.9",
+    runtime="python3.9",
     role=lambda_role.arn,
     handler="index.handler")
 
