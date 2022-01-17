@@ -10,7 +10,6 @@ def handler(event, context):
     #takes info from body that slack post and returns the challenge key 
     if event['rawPath'] == CREATE_RAW_PATH:
         #CreatePerson Path - write to database
-        print("Start Request for CreatePerson")
+        print("Start Request")
         challenge = event['body']
-        print(challenge)
         return challenge
