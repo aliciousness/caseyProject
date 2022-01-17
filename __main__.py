@@ -43,4 +43,4 @@ apigw = aws.apigatewayv2.Api("httpApiGateway",
     target=lambda_return.invoke_arn)
 
 # Export the API endpoint for easy access
-pulumi.export("endpoint", apigw.api_endpoint)
+pulumi.export("endpoint", apigw.api_endpoint + '/challenge')
