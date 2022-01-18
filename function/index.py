@@ -4,6 +4,8 @@ import uuid
 
 CREATE_RAW_PATH = "/challenge"
 
+EVENT_SUB = "/eventSub"
+
 def handler(event, context):
     print(event)
     
@@ -13,3 +15,6 @@ def handler(event, context):
         print("Start Request")
         challenge = event['body']
         return challenge
+    
+    if event['rawPath'] == EVENT_SUB:
+        print('It worked!')
