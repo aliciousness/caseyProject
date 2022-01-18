@@ -1,13 +1,16 @@
-import json
-import uuid
+import os,re,slack,uuid,json
 
 
 CREATE_RAW_PATH = "/challenge"
 
-EVENT_SUB = "/eventSub"
 
 def handler(event, context):
     print(event)
+    
+    #bot responding to channel
+    client = slack.WebClient(token='xoxb-2895391715429-2911092400561-olwSyFBzi77lNdFYcMimVMAy')
+    client.chat_postMessage(channel='report-dates', text='This is only a test.')
+
     
     #takes info from body that slack post and returns the challenge key 
     if event['rawPath'] == CREATE_RAW_PATH:
@@ -16,5 +19,4 @@ def handler(event, context):
         challenge = event['body']
         return challenge
     
-    if event['rawPath'] == EVENT_SUB:
-        print('It worked!')
+    
