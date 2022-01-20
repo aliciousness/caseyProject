@@ -6,4 +6,4 @@ APP_VERIF_TOKEN = ''
 
 client = slack.WebClient(token=SLACK_ACCESS_TOKEN)
 
-client.chat_postMessage(channel='report-dates', text='This is only a test.')
+client.chat_postMessage(channel='report-dates', text='This is only a test??')
