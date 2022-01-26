@@ -7,16 +7,17 @@ lambda_role = aws.iam.Role("lambdaRole",
     assume_role_policy=json.dumps({
         "Version": "2012-10-17",
         "Statement": [{
-                "Action": "sts:AssumeRole",
+                "Action": 
+                    "sts:AssumeRole",
                 "Principal": {
                     "Service": "lambda.amazonaws.com",
                 },
                 "Effect": "Allow",
                 "Sid": "",
             }]
-    }))
+    },))
 
-# Attach fullaccess policy to the Lambda role created above
+# Attach policy to the Lambda role created above
 role_policy_attachment = aws.iam.RolePolicyAttachment("lambdaRoleAttachment",
     role=lambda_role,
     policy_arn=aws.iam.ManagedPolicy.AWS_LAMBDA_BASIC_EXECUTION_ROLE)

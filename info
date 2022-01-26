@@ -1,0 +1,47 @@
+{
+  "token": "qIPSl94AaAzaS42udWranI4n",
+  "team_id": "T02SBBHM1CM",
+  "api_app_id": "A02SBBKMR8V",
+  "event": {
+    "client_msg_id": "3251dc77-e357-49ae-8cb7-81fd09e25516",
+    "type": "message",
+    "text": "Casey Sassaman",
+    "user": "U02SE97NFJ6",
+    "ts": "1643216917.669809",
+    "team": "T02SBBHM1CM",
+    "blocks": [
+      {
+        "type": "rich_text",
+        "block_id": "sYDQ",
+        "elements": [
+          {
+            "type": "rich_text_section",
+            "elements": [
+              {
+                "type": "text",
+                "text": "Casey Sassaman"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "channel": "C02S7JVA754",
+    "event_ts": "1643216917.669809",
+    "channel_type": "channel"
+  },
+  "type": "event_callback",
+  "event_id": "Ev030AQBDRSN",
+  "event_time": 1643216917,
+  "authorizations": [
+    {
+      "enterprise_id": null,
+      "team_id": "T02SBBHM1CM",
+      "user_id": "U02ST2QBSGH",
+      "is_bot": true,
+      "is_enterprise_install": false
+    }
+  ],
+  "is_ext_shared_channel": false,
+  "event_context": "4-eyJldCI6Im1lc3NhZ2UiLCJ0aWQiOiJUMDJTQkJITTFDTSIsImFpZCI6IkEwMlNCQktNUjhWIiwiY2lkIjoiQzAyUzdKVkE3NTQifQ"
+}
