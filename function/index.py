@@ -23,7 +23,10 @@ def handler(event, context):
         if user == "U02SE97NFJ6":
             txt = e['text']
             msg_id = data['event']['client_msg_id']
-            first,last = txt.split(' ')
+            split = txt.split(' ')
+            first = split[0]
+            last = split[1]
+            fin = 0
             date = event["requestContext"]["time"]
             if "finished" in txt:
                 fin = 1
@@ -34,15 +37,13 @@ def handler(event, context):
                     "reportFinished": fin,
                     "dateReportFinished": finDate
                     }
-            else:
-                fin = 0 
-                input = {
-                    "lastName": f"{last}",
-                    "firstName": f"{first}",
-                    "dateCreated": date,
-                    "reportFinished": fin,
-                    "dateReportFinished": ''
-                    }
+            input = {
+                "lastName": f"{last}",
+                "firstName": f"{first}",
+                "dateCreated": date,
+                "reportFinished": fin,
+                "dateReportFinished": ''
+                }
             
             response = TABLE.put_item(Item=input)
             print(response)
