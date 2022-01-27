@@ -25,14 +25,24 @@ def handler(event, context):
             msg_id = data['event']['client_msg_id']
             first,last = txt.split(' ')
             date = event["requestContext"]["time"]
-            fin = 0
-        
-            input = {
-                "lastName": f"{last}",
-                "firstName": f"{first}",
-                "dateCreated": date,
-                "reportFinished": 0
-                }
+            if "finished" in txt:
+                fin = 1
+                finDate = date
+                input = {
+                    "lastName": f"{last}",
+                    "firstName": f"{first}",
+                    "reportFinished": fin,
+                    "dateReportFinished": finDate
+                    }
+            else:
+                fin = 0 
+                input = {
+                    "lastName": f"{last}",
+                    "firstName": f"{first}",
+                    "dateCreated": date,
+                    "reportFinished": fin,
+                    "dateReportFinished": ''
+                    }
             
             response = TABLE.put_item(Item=input)
             print(response)
