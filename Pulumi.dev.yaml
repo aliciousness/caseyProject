@@ -1,2 +1,4 @@
 config:
   aws:region: us-east-1
+  caseyProject:SLACK_ACCESS_TOKEN:
+    secure: AAABAPHRrlD8vDLBp59Zpe2IdUDg/1EUElhiXF6xqDsmHkyte4npWQ1nmTKo2Od7P+jbhswhy3L82UR88EiHiNm8sWPRx+0m/XgGD9723W6dbciyrzjHSXI=

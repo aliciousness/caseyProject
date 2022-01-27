@@ -1,4 +1,4 @@
-import os,re,uuid,json,boto3,datetime 
+import os,re,uuid,json,boto3,datetime,slack
 
 
  
@@ -13,13 +13,10 @@ def handler(event, context):
     
     #takes info from body that slack post and returns the challenge key 
     if event['rawPath'] == CREATE_RAW_PATH:
-        
-        print("Start Request")
         string = event['body']
         data = json.loads(string)
         e = data['event']
         user = e['user']
-        
         if user == "U02SE97NFJ6":
             txt = e['text'].title()
             msg_id = data['event']['client_msg_id']

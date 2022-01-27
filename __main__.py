@@ -17,6 +17,7 @@ lambda_role = aws.iam.Role("lambdaRole",
             }]
     },))
 
+#lambda policy
 list_read_write_dynamoPolicy = aws.iam.Policy(
     resource_name = "listReadWriteDynamo",
     policy =json.dumps( {
@@ -85,7 +86,8 @@ list_read_write_dynamoPolicy = aws.iam.Policy(
     ]
 }
 ))
-# Attach policy to the Lambda role created above
+
+# Attach policies to the Lambda role created above
 role_policy_attachment = aws.iam.RolePolicyAttachment("lambdaRoleAttachment",
     role=lambda_role.name, 
     policy_arn=aws.iam.ManagedPolicy.AWS_LAMBDA_BASIC_EXECUTION_ROLE)
