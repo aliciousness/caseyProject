@@ -1,5 +1,5 @@
-import os,re,uuid,json,boto3,datetime,slack
-
+import os,re,uuid,json,boto3,datetime
+from __main__ import CLIENT
 
  
 
@@ -24,13 +24,14 @@ def handler(event, context):
             first = split[0]
             last = split[1]
             date = event["requestContext"]["time"]
-            if "Finished" in txt: 
-                response = TABLE.get_item(
-                    Key={
-                        'lastName': f"{last}",
-                        'firstName': f"{first}"
-                    }
-                ) 
+            response = TABLE.get_item(
+                Key={
+                    'lastName': f"{last}",
+                    'firstName': f"{first}"
+                    }) 
+            if txt.startswith('Get'):
+                CLIENT.chat_postMessage(channel='report-dates', text=f'{response}')
+            if txt.endswith('Finish'): 
                 input = {
                     "lastName": f"{last}",
                     "firstName": f"{first}",
@@ -38,6 +39,7 @@ def handler(event, context):
                     "reportFinished": 1,
                     "dateReportFinished": date
                     }
+                CLIENT.chat_postMessage(channel='report-dates', text=f'{response}')
             else:
                 input = {
                 "lastName": f"{last}",
@@ -46,6 +48,7 @@ def handler(event, context):
                 "reportFinished": 0,
                 "dateReportFinished": ''
                 }
+                CLIENT.chat_postMessage(channel='report-dates', text=f'{response}')
             
             response = TABLE.put_item(Item=input)
             
