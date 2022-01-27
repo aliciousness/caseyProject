@@ -21,32 +21,37 @@ def handler(event, context):
         user = e['user']
         
         if user == "U02SE97NFJ6":
-            txt = e['text']
+            txt = e['text'].title()
             msg_id = data['event']['client_msg_id']
-            split = txt.split(' ')
+            split = txt.replace(".",'').split(' ')
             first = split[0]
             last = split[1]
-            fin = 0
             date = event["requestContext"]["time"]
-            if "finished" in txt:
-                fin = 1
-                finDate = date
+            if "Finished" in txt: 
+                response = TABLE.get_item(
+                    Key={
+                        'lastName': f"{last}",
+                        'firstName': f"{first}"
+                    }
+                ) 
                 input = {
                     "lastName": f"{last}",
                     "firstName": f"{first}",
-                    "reportFinished": fin,
-                    "dateReportFinished": finDate
+                    "dateCreated": response['Item']["dateCreated"],
+                    "reportFinished": 1,
+                    "dateReportFinished": date
                     }
-            input = {
+            else:
+                input = {
                 "lastName": f"{last}",
                 "firstName": f"{first}",
                 "dateCreated": date,
-                "reportFinished": fin,
+                "reportFinished": 0,
                 "dateReportFinished": ''
                 }
             
             response = TABLE.put_item(Item=input)
-            print(response)
+            
         
         return ok
     
