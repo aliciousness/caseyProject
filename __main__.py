@@ -1,12 +1,7 @@
 import pulumi,json
 import pulumi_aws as aws
 import slack
-from slack_sdk import WebClient
 
-#call slack message
-config = pulumi.Config()
-def SLACK():
-    return WebClient(token=config.require('SLACK_ACCESS_TOKEN'))
     
 
 
@@ -108,8 +103,8 @@ role_policy_attachment_table = aws.iam.RolePolicyAttachment(
 # Create the lambda to execute
 lambda_return = aws.lambda_.Function("lambdaFunctionReturn", 
     code=pulumi.AssetArchive({
-        "index.py": pulumi.FileAsset("./index.py"),
-        "__main__.py":pulumi.FileAsset("./__main__.py")
+        #"index.py": pulumi.FileAsset("./index.py"),
+        ".":pulumi.FileArchive("./function")
     }),
     runtime="python3.9",
     role=lambda_role.arn,

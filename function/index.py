@@ -1,5 +1,6 @@
-import os,re,uuid,json,boto3,datetime
-import __main__ 
+
+import os,re,uuid,json,boto3
+from . import r
 
  
 
@@ -8,11 +9,18 @@ client = boto3.resource('dynamodb')
 TABLE = client.Table('dynamoDB-casey-reports-286a3ce')
 CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
-
+print(r.d.slack)
 def handler(event, context):
     print(event)
-    print(__main__.SLACK())
-    #takes info from body that slack post and returns the challenge key 
+    print("-----------")
+    print(r.d.Casey.SLACK())
+    print("-----------")
+    print(type(r.d.SLACK))
+    print("-----------")
+    print(type(r.d.slack))
+    
+    
+    
     if event['rawPath'] == CREATE_RAW_PATH:
         string = event['body']
         data = json.loads(string)
