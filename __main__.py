@@ -5,8 +5,10 @@ from slack_sdk import WebClient
 
 #call slack message
 config = pulumi.Config()
-SLACK = WebClient(token=config.require('SLACK_ACCESS_TOKEN'))
-HELLO = 'hello'
+def SLACK():
+    return WebClient(token=config.require('SLACK_ACCESS_TOKEN'))
+    
+
 
 # lambda role
 lambda_role = aws.iam.Role("lambdaRole", 

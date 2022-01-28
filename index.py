@@ -1,5 +1,5 @@
 import os,re,uuid,json,boto3,datetime
-import __main__
+import __main__ 
 
  
 
@@ -11,7 +11,7 @@ ok = 'http 200 OK'
 
 def handler(event, context):
     print(event)
-    print(__main__)
+    print(__main__.SLACK())
     #takes info from body that slack post and returns the challenge key 
     if event['rawPath'] == CREATE_RAW_PATH:
         string = event['body']
