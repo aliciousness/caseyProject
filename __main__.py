@@ -1,7 +1,12 @@
-import pulumi
-import json
+import pulumi,json
 import pulumi_aws as aws
 import slack
+from slack_sdk import WebClient
+
+#call slack message
+config = pulumi.Config()
+SLACK = WebClient(token=config.require('SLACK_ACCESS_TOKEN'))
+HELLO = 'hello'
 
 # lambda role
 lambda_role = aws.iam.Role("lambdaRole", 
@@ -101,7 +106,8 @@ role_policy_attachment_table = aws.iam.RolePolicyAttachment(
 # Create the lambda to execute
 lambda_return = aws.lambda_.Function("lambdaFunctionReturn", 
     code=pulumi.AssetArchive({
-        ".": pulumi.FileArchive("./function"),
+        "index.py": pulumi.FileAsset("./index.py"),
+        "__main__.py":pulumi.FileAsset("./__main__.py")
     }),
     runtime="python3.9",
     role=lambda_role.arn,
@@ -138,9 +144,8 @@ dynamodbReports = aws.dynamodb.Table("dynamoDB-casey-reports",
 # Export the API endpoint for easy access
 pulumi.export("endpoint", apigw.api_endpoint)
 
-#call slack message
-config = pulumi.Config()
-CLIENT = slack.WebClient(token=config.require('SLACK_ACCESS_TOKEN'))
+
+
 
 
 

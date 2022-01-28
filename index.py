@@ -1,16 +1,17 @@
 import os,re,uuid,json,boto3,datetime
-from __main__ import CLIENT
+import __main__
 
  
+
 
 client = boto3.resource('dynamodb')
 TABLE = client.Table('dynamoDB-casey-reports-286a3ce')
 CREATE_RAW_PATH = "/challenge"
-ok = 'htttp 200 OK'
+ok = 'http 200 OK'
 
 def handler(event, context):
     print(event)
-    
+    print(__main__)
     #takes info from body that slack post and returns the challenge key 
     if event['rawPath'] == CREATE_RAW_PATH:
         string = event['body']
@@ -30,7 +31,8 @@ def handler(event, context):
                     'firstName': f"{first}"
                     }) 
             if txt.startswith('Get'):
-                CLIENT.chat_postMessage(channel='report-dates', text=f'{response}')
+                # __main__.SLACK.chat_postMessage(channel='report-dates', text=f'{response}')
+                return
             if txt.endswith('Finish'): 
                 input = {
                     "lastName": f"{last}",
@@ -39,7 +41,7 @@ def handler(event, context):
                     "reportFinished": 1,
                     "dateReportFinished": date
                     }
-                CLIENT.chat_postMessage(channel='report-dates', text=f'{response}')
+                # __main__.SLACK.chat_postMessage(channel='report-dates', text=f'{response}')
             else:
                 input = {
                 "lastName": f"{last}",
@@ -48,7 +50,7 @@ def handler(event, context):
                 "reportFinished": 0,
                 "dateReportFinished": ''
                 }
-                CLIENT.chat_postMessage(channel='report-dates', text=f'{response}')
+                # __main__.SLACK.chat_postMessage(channel='report-dates', text=f'{response}')
             
             response = TABLE.put_item(Item=input)
             
