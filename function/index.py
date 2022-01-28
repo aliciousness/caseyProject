@@ -1,7 +1,7 @@
 
 import os,re,uuid,json,boto3
-from . import r
-
+from slack_sdk import WebClient
+# from r import *
  
 
 
@@ -9,18 +9,10 @@ client = boto3.resource('dynamodb')
 TABLE = client.Table('dynamoDB-casey-reports-286a3ce')
 CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
-print(r.d.slack)
+slack = WebClient(token=TOKEN)
+
 def handler(event, context):
-    print(event)
-    print("-----------")
-    print(r.d.Casey.SLACK())
-    print("-----------")
-    print(type(r.d.SLACK))
-    print("-----------")
-    print(type(r.d.slack))
-    
-    
-    
+     
     if event['rawPath'] == CREATE_RAW_PATH:
         string = event['body']
         data = json.loads(string)
@@ -39,7 +31,7 @@ def handler(event, context):
                     'firstName': f"{first}"
                     }) 
             if txt.startswith('Get'):
-                # __main__.SLACK.chat_postMessage(channel='report-dates', text=f'{response}')
+                slack.chat_postMessage(channel='report-dates', text=f'{response}')
                 return
             if txt.endswith('Finish'): 
                 input = {
@@ -49,7 +41,7 @@ def handler(event, context):
                     "reportFinished": 1,
                     "dateReportFinished": date
                     }
-                # __main__.SLACK.chat_postMessage(channel='report-dates', text=f'{response}')
+                slack.chat_postMessage(channel='report-dates', text=f'{response}')
             else:
                 input = {
                 "lastName": f"{last}",
@@ -58,7 +50,7 @@ def handler(event, context):
                 "reportFinished": 0,
                 "dateReportFinished": ''
                 }
-                # __main__.SLACK.chat_postMessage(channel='report-dates', text=f'{response}')
+                slack.chat_postMessage(channel='report-dates', text=f'{response}')
             
             response = TABLE.put_item(Item=input)
             

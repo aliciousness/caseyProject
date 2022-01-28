@@ -102,10 +102,11 @@ role_policy_attachment_table = aws.iam.RolePolicyAttachment(
 
 # Create the lambda to execute
 lambda_return = aws.lambda_.Function("lambdaFunctionReturn", 
-    code=pulumi.AssetArchive({
-        #"index.py": pulumi.FileAsset("./index.py"),
-        ".":pulumi.FileArchive("./function")
-    }),
+    # code=pulumi.AssetArchive({
+    #     ".function": pulumi.FileArchive("./index.py"),
+    #      "r.py":pulumi.FileAsset("./r.py")
+    # }),
+    code= pulumi.FileArchive('./function'),
     runtime="python3.9",
     role=lambda_role.arn,
     handler="index.handler")
