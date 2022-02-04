@@ -11,6 +11,20 @@ CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
 slack = WebClient(token=os.environ.get("TOKEN"))
 
+def formatter(call):
+    d = json.loads(call['Item'])
+    finishedate = d["dateReportFinsihed"]
+    createdate = d['dateCreated']
+    finished = d['reportFinished']
+    lastname = d['lastName']
+    firstname = d['firstName']
+    
+    if finished == 0: 
+        return f"{firstname} {lastname} report is not finished. the report was created on {createdate}"
+    if finished == 1:
+        return f"{firstname} {lastname} report is finished. the report was created on {createdate} and was submitted on {finishedate}"
+
+
 def handler(event, context):
      
     if event['rawPath'] == CREATE_RAW_PATH:
@@ -33,8 +47,9 @@ def handler(event, context):
                     'firstName': f"{first}"
                     }) 
             
+            
             if txt.startswith('Get'):
-                slack.chat_postMessage(channel='report-dates', text=f'{call}')
+                slack.chat_postMessage(channel='report-dates', text=f'{formatter()}')
                 return
             
             if txt.endswith('Finish'): 
@@ -45,7 +60,7 @@ def handler(event, context):
                     "reportFinished": 1,
                     "dateReportFinished": date
                     }
-                slack.chat_postMessage(channel='report-dates', text=f'{call}')
+                slack.chat_postMessage(channel='report-dates', text=f'{formatter()}')
             
             else:
                 input = {
@@ -55,7 +70,7 @@ def handler(event, context):
                 "reportFinished": 0,
                 "dateReportFinished": ''
                 }
-                slack.chat_postMessage(channel='report-dates', text=f'{call}')
+                slack.chat_postMessage(channel='report-dates', text=f'{formatter()}')
             
             response = TABLE.put_item(Item=input)
             
