@@ -1,6 +1,7 @@
 import pulumi,json
 import pulumi_aws as aws
-import slack
+from pulumi import Output
+
 
     
 
@@ -100,17 +101,31 @@ role_policy_attachment_table = aws.iam.RolePolicyAttachment(
     role=lambda_role.name,
     policy_arn=list_read_write_dynamoPolicy.arn)
 
+#Create layer
+layer = aws.lambda_.LayerVersion("Slack_sdk_lambda",
+layer_name = "slack_sdk",
+code = pulumi.FileArchive("packages.zip"),
+compatible_architectures=["x86_64", "arm64"],
+compatible_runtimes = ["python3.8","python3.9"],
+description = "This layer is a package for the slack sdk that i need for lambda function to run with slack"
+)
+
 # Create the lambda to execute
+
 lambda_return = aws.lambda_.Function("lambdaFunctionReturn", 
-    code=pulumi.FileArchive("./index.zip"),
+    code=pulumi.FileArchive("./packages.zip"),
     runtime="python3.8",
     role=lambda_role.arn,
     handler="index.handler",
+    layers= [layer.arn],
     environment= aws.lambda_.FunctionEnvironmentArgs(
         variables={
             "TOKEN": "xoxb-2895391715429-2911092400561-olwSyFBzi77lNdFYcMimVMAy",
         },
     ))
+
+
+
 
 # Give API Gateway permissions to invoke the Lambda
 lambda_permission = aws.lambda_.Permission("lambdaPermission", 
@@ -142,6 +157,8 @@ dynamodbReports = aws.dynamodb.Table("dynamoDB-casey-reports",
 
 # Export the API endpoint for easy access
 pulumi.export("endpoint", apigw.api_endpoint)
+pulumi.export("layerArn",layer.arn)
+pulumi.export("layerVersion", layer.version)
 
 
 
