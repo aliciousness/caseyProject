@@ -102,14 +102,15 @@ role_policy_attachment_table = aws.iam.RolePolicyAttachment(
 
 # Create the lambda to execute
 lambda_return = aws.lambda_.Function("lambdaFunctionReturn", 
-    # code=pulumi.AssetArchive({
-    #     ".function": pulumi.FileArchive("./index.py"),
-    #      "r.py":pulumi.FileAsset("./r.py")
-    # }),
-    code= pulumi.FileArchive('./function'),
+    code=pulumi.FileArchive("./index.zip"),
     runtime="python3.8",
     role=lambda_role.arn,
-    handler="index.handler")
+    handler="index.handler",
+    environment= aws.lambda_.FunctionEnvironmentArgs(
+        variables={
+            "TOKEN": "xoxb-2895391715429-2911092400561-olwSyFBzi77lNdFYcMimVMAy",
+        },
+    ))
 
 # Give API Gateway permissions to invoke the Lambda
 lambda_permission = aws.lambda_.Permission("lambdaPermission", 

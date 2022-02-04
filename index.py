@@ -1,7 +1,7 @@
 
 import re,uuid,json,boto3
 from slack_sdk import WebClient
-from r import *
+
  
 
 
@@ -9,7 +9,7 @@ client = boto3.resource('dynamodb')
 TABLE = client.Table('dynamoDB-casey-reports-286a3ce')
 CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
-slack = WebClient(token=TOKEN)
+slack = WebClient(token="TOKEN")
 
 def handler(event, context):
      
