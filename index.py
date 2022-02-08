@@ -1,5 +1,6 @@
 
 import re,uuid,json,boto3,os
+from subprocess import call
 from slack_sdk import WebClient
 
  
@@ -49,7 +50,7 @@ def handler(event, context):
             
             
             if txt.startswith('Get'):
-                slack.chat_postMessage(channel='report-dates', text=f'{formatter()}')
+                slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
                 return
             
             if txt.endswith('Finish'): 
@@ -60,7 +61,7 @@ def handler(event, context):
                     "reportFinished": 1,
                     "dateReportFinished": date
                     }
-                slack.chat_postMessage(channel='report-dates', text=f'{formatter()}')
+                slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
             
             else:
                 input = {
@@ -70,7 +71,7 @@ def handler(event, context):
                 "reportFinished": 0,
                 "dateReportFinished": ''
                 }
-                slack.chat_postMessage(channel='report-dates', text=f'{formatter()}')
+                slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
             
             response = TABLE.put_item(Item=input)
             
