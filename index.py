@@ -13,7 +13,7 @@ ok = 'http 200 OK'
 slack = WebClient(token=os.environ.get("TOKEN"))
 
 def formatter(c):
-    d = json.loads(c['Item'])
+    d = json.loads(c['Item']) #error here try adding the whole payload to json
     finishedate = d["dateReportFinsihed"]
     createdate = d['dateCreated']
     finished = d['reportFinished']
