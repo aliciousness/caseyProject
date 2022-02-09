@@ -12,8 +12,8 @@ CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
 slack = WebClient(token=os.environ.get("TOKEN"))
 
-def formatter(call):
-    d = json.loads(call['Item'])
+def formatter(c):
+    d = json.loads(c['Item'])
     finishedate = d["dateReportFinsihed"]
     createdate = d['dateCreated']
     finished = d['reportFinished']
