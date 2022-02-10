@@ -12,18 +12,7 @@ CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
 slack = WebClient(token=os.environ.get("TOKEN"))
 
-def formatter(c):
-    d = json.loads(c['Item']) #error here try adding the whole payload to json
-    finishedate = d["dateReportFinsihed"]
-    createdate = d['dateCreated']
-    finished = d['reportFinished']
-    lastname = d['lastName']
-    firstname = d['firstName']
-    
-    if finished == 0: 
-        return f"{firstname} {lastname} report is not finished. the report was created on {createdate}"
-    if finished == 1:
-        return f"{firstname} {lastname} report is finished. the report was created on {createdate} and was submitted on {finishedate}"
+
 
 
 def handler(event, context):
@@ -32,8 +21,7 @@ def handler(event, context):
         string = event['body']
         data = json.loads(string)
         e = data['event']
-        user = e['user']
-        
+        user = e['user']    
         
         if user == "U02SE97NFJ6":
             txt = e['text'].title()
@@ -44,38 +32,41 @@ def handler(event, context):
             date = event["requestContext"]["time"]
             call = TABLE.get_item(
                 Key={
-                    'lastName': f"{last}",
-                    'firstName': f"{first}"
+                    "lastName": last,
+                    "firstName": first
                     }) 
             
+            d = str(call)
+            # g = json.loads(d)
+            # print(g)
             
-            if txt.startswith('Get'):
-                slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
+            if txt.endswith('Get'):
+                slack.chat_postMessage(channel='report-dates', text=f'{d}')
                 return
+                
             
-            if txt.endswith('Finish'): 
+            elif txt.endswith('Finish'): 
                 input = {
                     "lastName": f"{last}",
                     "firstName": f"{first}",
                     "dateCreated": call['Item']["dateCreated"],
-                    "reportFinished": 1,
                     "dateReportFinished": date
                     }
-                slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
+                slack.chat_postMessage(channel='report-dates', text='DONE')
+                return
             
             else:
                 input = {
                 "lastName": f"{last}",
                 "firstName": f"{first}",
                 "dateCreated": date,
-                "reportFinished": 0,
                 "dateReportFinished": ''
                 }
-                slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
+                # slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
             
-            response = TABLE.put_item(Item=input)
+            TABLE.put_item(Item=input)
             
-        
+       
         return ok
     
     
