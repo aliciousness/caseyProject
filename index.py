@@ -23,11 +23,12 @@ def handler(event, context):
         user = e['user']    
         txt = e['text'].title()
         
+        
         if txt == "Help":
             slack_message('Please use these three commands before inputting the first and last name of a person for a report: "New" to store a new report. "Get" to get report information of a person. "Finish" to finish a report. ')
             return
                     
-        if user == "U02SE97NFJ6":
+        if user == "U02SE97NFJ6": #casey U02SEABA1UK
             msg_id = data['event']['client_msg_id']
             split = txt.replace(".",'').split(' ')
             first = split[1]
@@ -39,12 +40,13 @@ def handler(event, context):
                     "firstName": first
                     }) 
             
-            item = call['Item']
-            d = item['dateCreated']
-            f =item['dateReportFinished']
 
             
-            if txt.startswith('Get'):
+            if txt.startswith("Get"):
+                item = call['Item']
+                d = item['dateCreated']
+                f =item['dateReportFinished']
+                
                 slack_message(f'{first} {last} report start date is {d} and their report finish date is {f}')
                 return
                 
@@ -56,20 +58,20 @@ def handler(event, context):
                     "dateCreated": call['Item']["dateCreated"],
                     "dateReportFinished": date
                     }
+                TABLE.put_item(Item=input)
                 slack_message('DONE')
                 return
             
-            else:
+            elif txt.startswith("New"):
                 input = {
-                "lastName": f"{last}",
-                "firstName": f"{first}",
-                "dateCreated": date,
-                "dateReportFinished": ''
+                    "lastName": f"{last}",
+                    "firstName": f"{first}",
+                    "dateCreated": date,
+                    "dateReportFinished": ''
                 }
+                TABLE.put_item(Item=input)
                 slack_message('RECEIVED')
-            
-            TABLE.put_item(Item=input)
-            
+                return 
        
         return ok
     
