@@ -1,6 +1,5 @@
 
 import re,uuid,json,boto3,os
-from subprocess import call
 from slack_sdk import WebClient
 
  
@@ -11,24 +10,28 @@ TABLE = client.Table('dynamoDB-casey-reports-286a3ce')
 CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
 slack = WebClient(token=os.environ.get("TOKEN"))
-
+def slack_message(string):
+    return slack.chat_postMessage(channel='report-dates', text=string)
 
 
 
 def handler(event, context):
-     
     if event['rawPath'] == CREATE_RAW_PATH:
         string = event['body']
         data = json.loads(string)
         e = data['event']
         user = e['user']    
+        txt = e['text'].title()
         
+        if txt == "Help":
+            slack_message('Please use these three commands before inputting the first and last name of a person for a report: "New" to store a new report. "Get" to get report information of a person. "Finish" to finish a report. ')
+            return
+                    
         if user == "U02SE97NFJ6":
-            txt = e['text'].title()
             msg_id = data['event']['client_msg_id']
             split = txt.replace(".",'').split(' ')
-            first = split[0]
-            last = split[1]
+            first = split[1]
+            last = split[2]
             date = event["requestContext"]["time"]
             call = TABLE.get_item(
                 Key={
@@ -36,23 +39,24 @@ def handler(event, context):
                     "firstName": first
                     }) 
             
-            d = str(call)
-            # g = json.loads(d)
-            # print(g)
+            item = call['Item']
+            d = item['dateCreated']
+            f =item['dateReportFinished']
+
             
-            if txt.endswith('Get'):
-                slack.chat_postMessage(channel='report-dates', text=f'{d}')
+            if txt.startswith('Get'):
+                slack_message(f'{first} {last} report start date is {d} and their report finish date is {f}')
                 return
                 
             
-            elif txt.endswith('Finish'): 
+            elif txt.startswith('Finish'): 
                 input = {
                     "lastName": f"{last}",
                     "firstName": f"{first}",
                     "dateCreated": call['Item']["dateCreated"],
                     "dateReportFinished": date
                     }
-                slack.chat_postMessage(channel='report-dates', text='DONE')
+                slack_message('DONE')
                 return
             
             else:
@@ -62,7 +66,7 @@ def handler(event, context):
                 "dateCreated": date,
                 "dateReportFinished": ''
                 }
-                # slack.chat_postMessage(channel='report-dates', text=f'{formatter(call)}')
+                slack_message('RECEIVED')
             
             TABLE.put_item(Item=input)
             
