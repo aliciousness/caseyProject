@@ -28,7 +28,7 @@ def handler(event, context):
             slack_message('Please use these three commands before inputting the first and last name of a person for a report: "New" to store a new report. "Get" to get report information of a person. "Finish" to finish a report. ')
             return
                     
-        if user == "U02SE97NFJ6": #casey U02SEABA1UK
+        if user == "U02SEABA1UK": #casey U02SEABA1UK
             msg_id = data['event']['client_msg_id']
             split = txt.replace(".",'').split(' ')
             first = split[1]
