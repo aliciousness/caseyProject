@@ -1,6 +1,7 @@
 
-import re,uuid,json,boto3,os
+import re,uuid,json,boto3,os,blah
 from slack_sdk import WebClient
+
 
  
 
@@ -25,10 +26,10 @@ def handler(event, context):
         
         
         if txt == "Help":
-            slack_message('Please use these three commands before inputting the first and last name of a person for a report: "New" to store a new report. "Get" to get report information of a person. "Finish" to finish a report. ')
+            slack_message(blah.help_message)
             return
                     
-        if user == "U02SEABA1UK": #casey U02SEABA1UK
+        if user == "U02SE97NFJ6": #casey U02SEABA1UK
             msg_id = data['event']['client_msg_id']
             split = txt.replace(".",'').split(' ')
             first = split[1]
@@ -42,12 +43,13 @@ def handler(event, context):
             
 
             
+            
             if txt.startswith("Get"):
                 item = call['Item']
                 d = item['dateCreated']
                 f =item['dateReportFinished']
                 
-                slack_message(f'{first} {last} report start date is {d} and their report finish date is {f}')
+                slack_message(f'{first} {last} report start date is {d[:11]}, 60 days from this date is {blah.sixty(date)} their report finish date is', f if not f == '' else "sorry the date is not finished yet")
                 return
                 
             
@@ -59,7 +61,7 @@ def handler(event, context):
                     "dateReportFinished": date
                     }
                 TABLE.put_item(Item=input)
-                slack_message('DONE')
+                slack_message('CONGRATS YOU FINISHED')
                 return
             
             elif txt.startswith("New"):
