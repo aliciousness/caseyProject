@@ -32,6 +32,9 @@ def sixty(s):
 
 help_message = 'Please use these three commands before inputting the first and last name of a person for a report: "New" to store a new report. "Get" to get report information of a person. "Finish" to finish a report.'
 
+casey ="U02SEABA1UK" 
+richard ="U02SE97NFJ6"
+
 
     
     

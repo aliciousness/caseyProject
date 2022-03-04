@@ -29,7 +29,7 @@ def handler(event, context):
             slack_message(blah.help_message)
             return
                     
-        if user == "U02SE97NFJ6": #casey U02SEABA1UK
+        if user == blah.casey: 
             msg_id = data['event']['client_msg_id']
             split = txt.replace(".",'').split(' ')
             first = split[1]
