@@ -49,7 +49,8 @@ def handler(event, context):
                 d = item['dateCreated']
                 f =item['dateReportFinished']
                 
-                slack_message(f'{first} {last} report start date is {d[:11]}, 60 days from this date is {blah.sixty(date)} their report finish date is', f if not f == '' else "sorry the date is not finished yet")
+                slack_message(f'{first} {last} report start date is {d[:11]}, 60 days from this date is {blah.sixty(date)} their report finish date:') 
+                slack_message(f if not f == '' else "sorry the report was not submitted to be finished yet")
                 return
                 
             
