@@ -31,59 +31,7 @@ list_read_write_dynamoPolicy = aws.iam.Policy(
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
-                "dynamodb:DescribeContributorInsights",
-                "dynamodb:RestoreTableToPointInTime",
-                "dynamodb:UpdateGlobalTable",
-                "dynamodb:UpdateTableReplicaAutoScaling",
-                "dynamodb:DescribeTable",
-                "dynamodb:PartiQLInsert",
-                "dynamodb:GetItem",
-                "dynamodb:DescribeContinuousBackups",
-                "dynamodb:DescribeExport",
-                "dynamodb:EnableKinesisStreamingDestination",
-                "dynamodb:BatchGetItem",
-                "dynamodb:DisableKinesisStreamingDestination",
-                "dynamodb:UpdateTimeToLive",
-                "dynamodb:BatchWriteItem",
-                "dynamodb:PutItem",
-                "dynamodb:PartiQLUpdate",
-                "dynamodb:Scan",
-                "dynamodb:StartAwsBackupJob",
-                "dynamodb:UpdateItem",
-                "dynamodb:UpdateGlobalTableSettings",
-                "dynamodb:CreateTable",
-                "dynamodb:RestoreTableFromAwsBackup",
-                "dynamodb:GetShardIterator",
-                "dynamodb:DescribeReservedCapacity",
-                "dynamodb:ExportTableToPointInTime",
-                "dynamodb:DescribeBackup",
-                "dynamodb:UpdateTable",
-                "dynamodb:GetRecords",
-                "dynamodb:DescribeTableReplicaAutoScaling",
-                "dynamodb:ListTables",
-                "dynamodb:PurchaseReservedCapacityOfferings",
-                "dynamodb:CreateTableReplica",
-                "dynamodb:ListTagsOfResource",
-                "dynamodb:UpdateContributorInsights",
-                "dynamodb:CreateBackup",
-                "dynamodb:UpdateContinuousBackups",
-                "dynamodb:DescribeReservedCapacityOfferings",
-                "dynamodb:PartiQLSelect",
-                "dynamodb:CreateGlobalTable",
-                "dynamodb:DescribeKinesisStreamingDestination",
-                "dynamodb:DescribeLimits",
-                "dynamodb:ListExports",
-                "dynamodb:ConditionCheckItem",
-                "dynamodb:ListBackups",
-                "dynamodb:Query",
-                "dynamodb:DescribeStream",
-                "dynamodb:DescribeTimeToLive",
-                "dynamodb:ListStreams",
-                "dynamodb:ListContributorInsights",
-                "dynamodb:DescribeGlobalTableSettings",
-                "dynamodb:ListGlobalTables",
-                "dynamodb:DescribeGlobalTable",
-                "dynamodb:RestoreTableFromBackup",
+                "dynamodb:*"
             ],
             "Resource": "*"
         }
@@ -153,7 +101,14 @@ dynamodbReports = aws.dynamodb.Table("dynamoDB-casey-reports",
     billing_mode="PAY_PER_REQUEST",
     hash_key="lastName",
     range_key="firstName",
+    point_in_time_recovery= aws.dynamodb.TablePointInTimeRecoveryArgs(
+        enabled= True
     )
+    )
+#s3 for table backup
+tableS3 = aws.s3.Bucket(
+    "TablePITR"
+)
 
 # Export the API endpoint for easy access
 pulumi.export("endpoint", apigw.api_endpoint)
