@@ -1,8 +1,7 @@
 import pulumi,json
 import pulumi_aws as aws
-from pulumi import Output
-import os 
-
+from pulumi import Output 
+from dd import SLACK_TOKEN
 
     
 
@@ -69,8 +68,7 @@ lambda_return = aws.lambda_.Function("lambdaFunctionReturn",
     layers= [layer.arn],
     environment= aws.lambda_.FunctionEnvironmentArgs(
         variables={
-            "TOKEN": os.environ.get("SLACK_TOKEN"),
-            #old token xoxb-2895391715429-2911092400561-olwSyFBzi77lNdFYcMimVMAy
+            "TOKEN": SLACK_TOKEN
         },
     ))
 
