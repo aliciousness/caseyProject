@@ -1,4 +1,4 @@
 *.md
 *.pyc
 venv/
-.env
+*.env
