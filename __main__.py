@@ -74,6 +74,11 @@ lambda_return = aws.lambda_.Function("lambdaFunctionReturn",
 
 
 
+# Set up the API Gateway
+apigw = aws.apigatewayv2.Api("slackApiGateway", 
+    protocol_type="HTTP",
+    route_key="POST /challenge",
+    target=lambda_return.invoke_arn)
 
 # Give API Gateway permissions to invoke the Lambda
 lambda_permission = aws.lambda_.Permission("lambdaPermission", 
@@ -81,11 +86,6 @@ lambda_permission = aws.lambda_.Permission("lambdaPermission",
     principal="apigateway.amazonaws.com",
     function=lambda_return)
 
-# Set up the API Gateway
-apigw = aws.apigatewayv2.Api("httpApiGateway", 
-    protocol_type="HTTP",
-    route_key="POST /challenge",
-    target=lambda_return.invoke_arn)
 
 #DynamoDB table for reports
 dynamodbReports = aws.dynamodb.Table("dynamoDB-casey-reports",

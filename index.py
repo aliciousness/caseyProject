@@ -10,17 +10,19 @@ TABLE = client.Table('dynamoDB-casey-reports-286a3ce')
 CREATE_RAW_PATH = "/challenge"
 ok = 'http 200 OK'
 slack = WebClient(token=os.environ.get("TOKEN"))
+
 def slack_message(string):
     return slack.chat_postMessage(channel='report-dates', text=string)
 
 
 
 def handler(event, context):
-    print(event)
+    
+    data = json.loads(event["body"])
+    #return data['challenge']
     
     if event['rawPath'] == CREATE_RAW_PATH:
-        string = event['body']
-        data = json.loads(string)
+        
         e = data['event']
         user = e['user']    
         txt = e['text'].title()
@@ -30,7 +32,7 @@ def handler(event, context):
             slack_message(blah.help_message)
             return
                     
-        if user == blah.richard: 
+        if user == blah.casey: 
             msg_id = data['event']['client_msg_id']
             split = txt.replace(".",'').split(' ')
             first = split[1]
@@ -63,7 +65,7 @@ def handler(event, context):
                     "dateReportFinished": date
                     }
                 TABLE.put_item(Item=input)
-                slack_message('CONGRATS YOU FINISHED')
+                slack_message(f'CONGRATS YOU FINISHED {first} {last}!')
                 return
             
             elif txt.startswith("New"):
@@ -74,10 +76,10 @@ def handler(event, context):
                     "dateReportFinished": ''
                 }
                 TABLE.put_item(Item=input)
-                slack_message('RECEIVED')
+                slack_message('RECEIVED!')
                 return 
        
-    return ok
+    return data['challenge']
     
     
     
