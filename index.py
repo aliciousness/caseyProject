@@ -2,10 +2,9 @@
 import re,uuid,json,boto3,os,blah
 from slack_sdk import WebClient
 
-
+#to update the zip package---
+#zip -g packages.zip index.py
  
-
-
 client = boto3.resource('dynamodb')
 TABLE = client.Table('dynamoDB-casey-reports-286a3ce')
 CREATE_RAW_PATH = "/challenge"
@@ -17,6 +16,8 @@ def slack_message(string):
 
 
 def handler(event, context):
+    print(event)
+    
     if event['rawPath'] == CREATE_RAW_PATH:
         string = event['body']
         data = json.loads(string)
@@ -29,7 +30,7 @@ def handler(event, context):
             slack_message(blah.help_message)
             return
                     
-        if user == blah.casey: 
+        if user == blah.richard: 
             msg_id = data['event']['client_msg_id']
             split = txt.replace(".",'').split(' ')
             first = split[1]
@@ -76,7 +77,7 @@ def handler(event, context):
                 slack_message('RECEIVED')
                 return 
        
-        return ok
+    return ok
     
     
     
